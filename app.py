@@ -1,5 +1,6 @@
 from flask import Flask,jsonify,request
-from db import Session , engine,connection_db
+from db import Session , engine
+from config import connection_db
 import json
 from werkzeug.security import generate_password_hash,check_password_hash
 import datetime
