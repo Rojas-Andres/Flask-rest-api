@@ -7,6 +7,7 @@ import datetime
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
 import jwt
+from api.controllers import bp_api
 app = Flask(__name__)
 app.config['SECRET_KEY']='Th1s1ss3cr3t'
 
@@ -16,7 +17,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 session = Session()
+
 from models import *
+app.register_blueprint(bp_api)
 
 def token_required(f):
    @wraps(f)

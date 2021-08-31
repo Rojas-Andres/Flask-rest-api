@@ -1,9 +1,11 @@
 Flask==1.1.4
-SQLAlchemy==1.4.23
-psycopg2==2.9.1
-pyjwt==1.5.3
+SQLAlchemy==1.4.9
 jwt==1.2.0
+werkzeug ==0.16.1
+flask_sqlalchemy
+psycopg2
+jwt==1.2.0
+PyJWT==1.6.4
 Flask-Script==2.0.6
 Flask-Migrate==2.5.3
-flask_sqlalchemy
-gunicorn
+flask_restplus
