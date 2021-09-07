@@ -1,9 +1,9 @@
 Flask==1.1.4
+psycopg2==2.8.3
 SQLAlchemy==1.4.9
 jwt==1.2.0
 werkzeug ==0.16.1
-flask_sqlalchemy
-psycopg2
+Flask-SQLAlchemy==2.5.1
 jwt==1.2.0
 PyJWT==1.6.4
 Flask-Script==2.0.6
