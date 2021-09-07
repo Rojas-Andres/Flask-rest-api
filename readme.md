@@ -31,3 +31,8 @@ Docker:
     - El 5000 es el puerto de la imagen (con el exopose) y el 80 lo bindeamos.
     
     - docker run -p 80:5000 app_python:v1
+
+Subir imagen a dockerHub:
+    - login desde la terminal con docker login
+    - docker tag anrojlo/flask_docker:v1 anrojlo/flask_docker_subido
+    - docker push anrojlo/flask_docker_subido
