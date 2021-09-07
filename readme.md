@@ -4,9 +4,9 @@ https://realpython.com/flask-by-example-part-2-postgres-sqlalchemy-and-alembic/
 Crear base de datos sqlite3:
     - sqlite3 basedatos.db
 Realizar migraciones:
-    - python manage.py init
-    - python manage.py migrate
-    - python manage.py upgrade
+    - python manage.py db init
+    - python manage.py db migrate
+    - python manage.py db upgrade
 'sqlite:///database.db'
 Aws : 
  - amazon linux
