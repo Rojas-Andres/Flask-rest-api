@@ -34,5 +34,6 @@ Docker:
 
 Subir imagen a dockerHub:
     - login desde la terminal con docker login
+    - docker build -t anrojlo/flask_docker:v1 .
     - docker tag anrojlo/flask_docker:v1 anrojlo/flask_docker_subido
     - docker push anrojlo/flask_docker_subido
