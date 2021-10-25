@@ -36,7 +36,6 @@ class Login(Resource):
             return jsonify(valida)
         return jsonify({"Respuesta":"Login requerido!!!!"})
 
-
 @ns_model_usuario.route('/CreateUser/')
 @api.doc(description="Correo y contraseña")
 class CrearUsuario(Resource):
@@ -64,6 +63,7 @@ class Venta(Resource):
         datos = request.json 
         venta = actualizar_venta(datos["id"],datos["venta"])
         return jsonify(venta)
+    
     @ns_model_venta.expect(VerificarDatos.EliminarVenta,validate=True)
     def delete(self):
         dato = request.json 
