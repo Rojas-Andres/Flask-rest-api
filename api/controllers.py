@@ -1,4 +1,4 @@
-from flask import Blueprint,jsonify, request
+from flask import Blueprint,jsonify, request,abort
 from flask_restplus import Api, Resource,fields 
 from api.functions import *
 bp_api = Blueprint('Api',__name__,url_prefix="/Api")
@@ -25,6 +25,9 @@ class VerificarDatos():
     EliminarVenta =api.model('Eliminar venta',{
         "id":fields.Integer(description=u"id venta",required=True,),
     }) 
+    ValidarUsuario =api.model('Validar Usuario',{
+        "username":fields.String(description=u"Usuario",required=True,),
+    }) 
 @ns_model.route('/Login/')
 @api.doc(description="Correo y contraseña")
 class Login(Resource):
@@ -34,7 +37,7 @@ class Login(Resource):
         valida = valida_user(auth["username"],auth["password"])
         if 'token' in valida:
             return jsonify(valida)
-        return jsonify({"Respuesta":"Login requerido!!!!"})
+        return abort(401,'Credenciales incorrectas!')
 
 @ns_model_usuario.route('/CreateUser/')
 @api.doc(description="Correo y contraseña")
@@ -44,7 +47,14 @@ class CrearUsuario(Resource):
         usuario = request.json
         usuario_creado = crear_usuario(usuario["username"],usuario["password"])
         return jsonify(usuario_creado)
-
+@ns_model_usuario.route('/ValidarUsuario/')
+@api.doc(description="Usuario")
+class ValidarUsuario(Resource):
+    @ns_model_usuario.expect(VerificarDatos.ValidarUsuario,validate=True)
+    def post(self):
+        body = request.json
+        user = usuario(body["username"])
+        return jsonify(user)
 @ns_model_venta.route('/Ventas/')
 @api.doc(description="Ventas")
 class Venta(Resource):

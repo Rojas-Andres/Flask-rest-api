@@ -1,3 +1,9 @@
+def user_valida(username):
+    query=f""" 
+        select * from usuario where username='{username}'
+    """
+    return query 
+
 def insertar_usuario(username,password):
     query=f""" 
     INSERT INTO usuario(username,password)

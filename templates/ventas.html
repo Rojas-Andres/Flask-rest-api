@@ -1,0 +1,25 @@
+{% extends 'base.html' %} 
+{% block title %}
+Crear Venta
+{% endblock %}
+
+{% block body%}
+    <form method="POST" action="/venta">
+        <label for="">Crear Venta</label>
+        <div class="form-group">
+            <span>Id usuario</span>
+            <input type="number" class="form-control" id="id_username" placeholder="Id Usuario" name="id_username" required>
+        </div>
+        <div class="form-group">
+            <span>Venta</span>
+            <input type="number" class="form-control" id="venta" placeholder="Venta" name="venta" required>
+        </div>
+        <div class="form-group">
+            <span>Venta producto</span>
+            <input type="number" class="form-control" id="venta_producto" placeholder="Venta Producto" name="venta_producto" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Crear</button>
+        <a href="/">Regresar</a>
+    </form>
+
+{% endblock %}

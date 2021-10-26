@@ -54,3 +54,9 @@ def eliminar_venta(id):
     except:
         return {"Respuesta":"No Eliminada"}
     return {"Respuesta":"VENTA ELIMINADA!"}
+def usuario(username):
+    try:
+        usuario = engine.execute(user_valida(username)).one()
+    except:
+        return {"Respuesta":"No Eliminada"}
+    return {"rol":usuario[3]}

@@ -27,9 +27,7 @@ def token_required(f):
    def decorator(*args, **kwargs):
         try:
             data = jwt.decode(session["token"], app.config['SECRET_KEY'])
-            print("Excelente")
         except:
-            print("El token no es valido o no esta logueado")
             return redirect(url_for('login'))
         return f(*args, **kwargs)
    return decorator
@@ -53,9 +51,9 @@ def registro():
             "username":username,
             "password":password
         }
-        response = requests.post('http://localhost:5000/ApiVentas/Ventas/',json=args)
+        response = requests.post('http://localhost:5000/Api/Usuario/CreateUser/',json=args)
         if response.status_code == 200:
-            return render_template('index.html')
+            return render_template('login.html')
         else:
             return render_template('registro.html')
     return render_template('registro.html')
@@ -72,11 +70,38 @@ def login():
         response = requests.post('http://localhost:5000/Api/Methods/Login/',json=args)
         if response.status_code == 200:
             response_api = json.loads(response.text)
+            response_user = requests.post('http://localhost:5000/Api/Usuario/ValidarUsuario/',json={"username":username})
+            response_user = json.loads(response_user.text)
             session["token"] = response_api["token"]
+            session["rol"] = response_user["rol"]
             return render_template('index.html')
         else:
             return render_template('login.html')
     return render_template('login.html')
 
+@app.route('/venta',methods=['GET','POST'])
+@token_required
+def venta():
+    if session["rol"]=="admin":
+        if request.method=="POST":
+            id_username = request.form["id_username"]
+            venta = request.form["venta"]
+            venta_producto = request.form["venta_producto"]
+            args = {
+                "id_username":int(id_username),
+                "venta":int(venta),
+                "venta_producto":int(venta_producto)
+            }
+            response = requests.post('http://localhost:5000/Api/ApiVentas/Ventas/',json=args)
+            if response.status_code == 200:
+                return render_template('ventas.html')
+            else:
+                return render_template('ventas.html')
+        return render_template('ventas.html')
+    else:
+        return render_template('permisos.html')
+@app.route('/permisos',methods=["GET"])
+def permisos():
+    return render_template('permisos.html')
 if __name__ == "__main__":
     app.run(debug=True,host="0.0.0.0")
