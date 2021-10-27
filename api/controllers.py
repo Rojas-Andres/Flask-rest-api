@@ -46,6 +46,8 @@ class CrearUsuario(Resource):
     def post(self):
         usuario = request.json
         usuario_creado = crear_usuario(usuario["username"],usuario["password"])
+        if 'error' in usuario_creado:
+            return abort(400,"No se creo el usuario ")
         return jsonify(usuario_creado)
 @ns_model_usuario.route('/ValidarUsuario/')
 @api.doc(description="Usuario")

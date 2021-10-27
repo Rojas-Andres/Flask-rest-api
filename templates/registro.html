@@ -4,6 +4,12 @@ Registro Usuario
 {% endblock %}
 
 {% block body%}
+    {% if context.message|length > 1 %}
+        <div class="alert alert-{{context.type}} alert-dismissible fade show">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ context.message }}
+        </div>
+    {% endif %}
     <form method="POST" action="/registro">
         <label for="">Registro Usuario</label>
         <div class="form-group">

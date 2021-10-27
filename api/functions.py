@@ -27,7 +27,7 @@ def crear_usuario(username,password):
     try:
         engine.execute(insertar_usuario(username,hash_password))
     except:
-        return {"respuesta":"Usuario ya esta creado en la base de datos!"}
+        return {"error":"No se creo el user"}
     return {"respuesta":"Usuario creado correctamente!"}
 
 def obtener_venta():

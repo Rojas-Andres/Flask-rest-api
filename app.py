@@ -44,6 +44,10 @@ def logout():
 
 @app.route('/registro',methods=['GET','POST'])
 def registro():
+    context={
+        "message":"",
+        "type":""
+    }
     if request.method=='POST':
         username = request.form["username"]
         password = request.form["password"]
@@ -53,10 +57,15 @@ def registro():
         }
         response = requests.post('http://localhost:5000/Api/Usuario/CreateUser/',json=args)
         if response.status_code == 200:
-            return render_template('login.html')
+            context["message"] = "Registro exitoso"
+            context["type"] = "success"
+            print("entre")
+            return render_template('registro.html',context=context)
         else:
-            return render_template('registro.html')
-    return render_template('registro.html')
+            context["message"] = "Error al registrarse"
+            context["type"] = "danger"
+            return render_template('registro.html',context=context)
+    return render_template('registro.html',context=context)
 
 @app.route('/login',methods=['GET','POST'])
 def login():
