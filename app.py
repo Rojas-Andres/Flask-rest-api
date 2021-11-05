@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 import jwt
 from api.controllers import bp_api
 import requests
-
+import redis
 app = Flask(__name__)
 app.config['SECRET_KEY']='Th1s1ss3cr3t'
 
@@ -19,6 +19,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 session_bd = Session()
 
+r = redis.Redis(host="localhost",port="6379")
+
 from models import *
 app.register_blueprint(bp_api)
 
@@ -28,6 +30,8 @@ def token_required(f):
         try:
             data = jwt.decode(session["token"], app.config['SECRET_KEY'])
         except:
+            r.delete(session["username"])
+            session.clear()
             return redirect(url_for('login'))
         return f(*args, **kwargs)
    return decorator
@@ -39,6 +43,7 @@ def index():
 
 @app.route('/logout', methods=['GET'])
 def logout():
+    r.delete(session["username"])
     session.clear()
     return render_template('login.html')
 
@@ -77,12 +82,14 @@ def login():
             "password":password
         }
         response = requests.post('http://localhost:5000/Api/Methods/Login/',json=args)
-        if response.status_code == 200:
+        if response.status_code == 200 and r.exists(username)==0:
             response_api = json.loads(response.text)
             response_user = requests.post('http://localhost:5000/Api/Usuario/ValidarUsuario/',json={"username":username})
             response_user = json.loads(response_user.text)
             session["token"] = response_api["token"]
             session["rol"] = response_user["rol"]
+            session["username"] = username
+            r.mset({username:1})
             return render_template('index.html')
         else:
             return render_template('login.html')
@@ -112,5 +119,16 @@ def venta():
 @app.route('/permisos',methods=["GET"])
 def permisos():
     return render_template('permisos.html')
+
+@app.route('/crear_nombre',methods=["GET"])
+def nombre():
+    r.mset({"nombre":"andres"})
+    return {"Respuesta":"OK"}
+@app.route('/retornar_nombre',methods=["GET"])
+def return_nombre():
+    dato = r.get("nombre").decode('utf-8')
+    print(dato,type(dato))
+    return {"Respuesta":dato}
+
 if __name__ == "__main__":
     app.run(debug=True,host="0.0.0.0")
