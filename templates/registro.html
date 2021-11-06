@@ -4,10 +4,10 @@ Registro Usuario
 {% endblock %}
 
 {% block body%}
-    {% if context.message|length > 1 %}
+    {% if context.mensaje|length >1 %}
         <div class="alert alert-{{context.type}} alert-dismissible fade show">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ context.message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{context.mensaje}}
         </div>
     {% endif %}
     <form method="POST" action="/registro">
@@ -22,5 +22,6 @@ Registro Usuario
         </div>
         <button type="submit" class="btn btn-primary"> Registrar</button>
     </form>
+    <a href="/">Regresar</a>
 
 {% endblock %}

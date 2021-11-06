@@ -30,8 +30,9 @@ def token_required(f):
         try:
             data = jwt.decode(session["token"], app.config['SECRET_KEY'])
         except:
-            r.delete(session["username"])
-            session.clear()
+            if 'username' in session:
+                r.delete(session["username"])
+                session.clear()
             return redirect(url_for('login'))
         return f(*args, **kwargs)
    return decorator
@@ -50,8 +51,8 @@ def logout():
 @app.route('/registro',methods=['GET','POST'])
 def registro():
     context={
-        "message":"",
-        "type":""
+        "type":"",
+        "mensaje":""
     }
     if request.method=='POST':
         username = request.form["username"]
@@ -62,13 +63,12 @@ def registro():
         }
         response = requests.post('http://localhost:5000/Api/Usuario/CreateUser/',json=args)
         if response.status_code == 200:
-            context["message"] = "Registro exitoso"
-            context["type"] = "success"
-            print("entre")
+            context["type"]="success"
+            context["mensaje"]="Usuario creado correctamente"
             return render_template('registro.html',context=context)
         else:
-            context["message"] = "Error al registrarse"
-            context["type"] = "danger"
+            context["type"]="danger"
+            context["mensaje"]="No se creo el usuario"
             return render_template('registro.html',context=context)
     return render_template('registro.html',context=context)
 
@@ -127,7 +127,6 @@ def nombre():
 @app.route('/retornar_nombre',methods=["GET"])
 def return_nombre():
     dato = r.get("nombre").decode('utf-8')
-    print(dato,type(dato))
     return {"Respuesta":dato}
 
 if __name__ == "__main__":
