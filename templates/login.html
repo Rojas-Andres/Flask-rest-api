@@ -1,21 +1,27 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block title %}
 Iniciar sesion
 {% endblock %}
 
 {% block body%}
-    <form method="POST" action="/login">
-        <label for="">Iniciar sesion</label>
-        <div class="form-group">
-            <span>Usuario</span>
-            <input type="text" class="form-control" id="username" placeholder="Usuario" name="username" required>
-        </div>
-        <div class="form-group">
-            <span>Contraseña</span>
-            <input type="password" class="form-control" id="password" placeholder="Contraseña" name="password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Iniciar sesion</button>
-    </form>
-    <span>¿No tienes usuario?</span>
-    <a href="/registro">Registrarse</a>
+{% if context.mensaje|length >1 %}
+<div class="alert alert-{{context.type}} alert-dismissible fade show">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{context.mensaje}}
+</div>
+{% endif %}
+<form method="POST" action="/login">
+    <label for="">Iniciar sesion</label>
+    <div class="form-group">
+        <span>Usuario</span>
+        <input type="text" class="form-control" id="username" placeholder="Usuario" name="username" required>
+    </div>
+    <div class="form-group">
+        <span>Contraseña</span>
+        <input type="password" class="form-control" id="password" placeholder="Contraseña" name="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Iniciar sesion</button>
+</form>
+<span>¿No tienes usuario?</span>
+<a href="/registro">Registrarse</a>
 {% endblock %}
